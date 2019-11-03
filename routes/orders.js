@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/', (req, res, next) => {
     Order.find()
         .select('product quantity _id')
+        .populate('product', 'name')
         .exec()
         .then(docs => {
             res.status(200).json({
@@ -77,6 +78,7 @@ router.post('/', (req, res, next) => {
 router.get('/:orderId', (req, res, next) => {
     const orderId = req.params.orderId;    
     Order.findById(orderId)
+        .populate('product', 'name')
         .exec()
         .then(order => {
             if (!order) {
