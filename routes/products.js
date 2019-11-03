@@ -1,3 +1,7 @@
+// TODO Is this the best way?
+const os = require('os');
+const ip_address = os.networkInterfaces().wlan0[0].address;
+
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -6,11 +10,26 @@ const Product = require('../models/product')
 
 router.get('/', (req, res, next) => {
     Product.find()
+        .select('name price _id')
         .exec()
         .then(docs => {
-            console.log(docs);
-            if (docs.length >= 0) {
-                res.status(200).json(docs);                
+            const response = {
+                count: docs.length,
+                products: docs.map(doc => {
+                    return {
+                        name: doc.name,
+                        price: doc.price,
+                        _id: doc._id,
+                        url: {
+                            type: 'GET',
+                            url: 'http://' + ip_address + ':3000/products/' + doc._id
+                        }
+                    }
+                })
+            };
+            console.log(response);
+            if (response.count >= 0) {
+                res.status(200).json(response);                
             } else {
                 res.status(404).json({
                     message: 'No Entries Found'
@@ -29,9 +48,13 @@ router.get('/:productId', (req, res, next) => {
     Product.findById(id)
         .exec()
         .then(doc => {
-            console.log(doc);
+            console.log(doc)
             if (doc) {
-                res.status(200).json(doc);
+                res.status(200).json({
+                    name: doc.name,
+                    price: doc.price,
+                    _id: doc._id
+                });
             } else {
                 res.status(404).json({
                     message: "No valid entry found for ID",
@@ -67,8 +90,16 @@ router.post('/', (req, res, next) => {
     .then(result => {
         console.log(result);
         res.status(201).json({
-        message: 'Handling POST requests to /products',
-        createdProduct: result
+        message: 'Created product successfully',
+        createdProduct: {
+            name: result.name,
+            price: result.price,
+            _id: result._id,
+            request: {
+                type: 'GET',
+                url: 'http://' + ip_address + ':3000/products/' + result._id
+            }
+        }
     });
     })
     .catch(err => {
