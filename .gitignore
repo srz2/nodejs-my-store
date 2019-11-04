@@ -359,3 +359,7 @@ MigrationBackup/
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
+# Ignore uploads folder
+uploads/
+

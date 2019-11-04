@@ -19,6 +19,9 @@ const app = express();
 // Enable Logging
 app.use(log('dev'));
 
+// Make the uploads folder publicly available
+app.use('/uploads', express.static('uploads'));
+
 // Configure Body parser
 app.use(parser.urlencoded({
     extended: false
