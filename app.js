@@ -6,12 +6,14 @@ const mongoose = require('mongoose');
 const routeProduct = require('./routes/products');
 const routeSteven  = require('./routes/steven');
 const routeOrders  = require('./routes/orders');
+const routeUsers =   require('./routes/users');
 
 mongoose.connect(
     'mongodb+srv://steven:myPass@cluster0-5398r.mongodb.net/test?retryWrites=true&w=majority',
     { 
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex: true
     }
 );
 const app = express();
@@ -48,6 +50,7 @@ app.use((req, res, next) => {
 app.use('/products', routeProduct);
 app.use('/steven', routeSteven);
 app.use('/orders', routeOrders);
+app.use('/user', routeUsers);
 
 // Handle error where no page is handled via routing
 app.use((req, res, next) => {
