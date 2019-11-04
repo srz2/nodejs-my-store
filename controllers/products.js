@@ -1,7 +1,3 @@
-// TODO Is this the best way?
-const os = require('os');
-const ip_address = os.networkInterfaces().wlan0[0].address;
-
 const mongoose = require('mongoose');
 
 const Product = require('../models/product')
@@ -21,7 +17,7 @@ exports.get_products = (req, res, next) => {
                         _id: doc._id,
                         url: {
                             type: 'GET',
-                            url: 'http://' + ip_address + ':3000/products/' + doc._id,
+                            url: 'http://' + process.env.IP_ADDRESS + ':' + process.env.PORT + '/products/' + doc._id,
                             test: 'testing'
                         }
                     }
@@ -90,7 +86,7 @@ exports.create_product = (req, res, next) => {
                     _id: result._id,
                     request: {
                         type: 'GET',
-                        url: 'http://' + ip_address + ':3000/products/' + result._id
+                        url: 'http://' + process.env.IP_ADDRESS + ':' + process.env.PORT + '/products/' + result._id
                     }
                 }
             });

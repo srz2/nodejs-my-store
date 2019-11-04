@@ -1,9 +1,13 @@
+require('dotenv').config();
 const http = require('http');
 const app = require('./app');
 
-const port = 3000; //process.env.PORT;
+const port = process.env.PORT;
 const server = http.createServer(app);
 
-console.log("App has started...");
-
-server.listen(port);
+if (port === undefined){
+    console.log('The port is undefined, have you created your .env file from .env_sample?');
+} else {
+    console.log("App has started...Listening on port " + port);
+    server.listen(port);
+}

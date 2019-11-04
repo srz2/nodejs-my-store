@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const log = require('morgan');
 const parser = require('body-parser');
@@ -9,13 +10,14 @@ const routeOrders  = require('./routes/orders');
 const routeUsers =   require('./routes/users');
 
 mongoose.connect(
-    'mongodb+srv://steven:myPass@cluster0-5398r.mongodb.net/test?retryWrites=true&w=majority',
+    'mongodb+srv://' + process.env.MONGODB_USERNAME + ':' + process.env.MONGODB_PASS + '@cluster0-5398r.mongodb.net/test?retryWrites=true&w=majority',
     { 
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true
     }
 );
+
 const app = express();
 
 // Enable Logging

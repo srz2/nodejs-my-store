@@ -1,7 +1,3 @@
-// TODO Is this the best way?
-const os = require('os');
-const ip_address = os.networkInterfaces().wlan0[0].address;
-
 const mongoose = require('mongoose');
 
 const Order = require('../models/order');
@@ -22,7 +18,7 @@ exports.orders_get_all = (req, res, next) => {
                         quantity: doc.quantity,
                         request: {
                             type: 'GET',
-                            url: 'http://' + ip_address + ':3000/orders/' + doc._id
+                            url: 'http://' + process.env.IP_ADDRESS + ':' + process.env.PORT + '/orders/' + doc._id
                         }
                     }
                 })
@@ -62,7 +58,7 @@ exports.create_order = (req, res, next) => {
                 },
                 request: {
                     type: 'GET',
-                    url: 'http://' + ip_address + ':3000/orders/' + result._id
+                    url: 'http://' + process.env.IP_ADDRESS + ':' + process.env.PORT + '/orders/' + result._id
                 }
             });
         })
@@ -89,7 +85,7 @@ exports.get_order = (req, res, next) => {
                 order: order,
                 request: {
                     type: 'GET',
-                    url: 'http://' + ip_address + ':3000/orders'
+                    url: 'http://' + process.env.IP_ADDRESS + ':3000/orders'
                 }
             });
         })
@@ -109,7 +105,7 @@ exports.delete_order = (req, res, next) => {
                 message: 'Order Deleted',
                 request: {
                     type: 'POST',
-                    url: 'http://' + ip_address + ':3000/orders',
+                    url: 'http://' + process.env.IP_ADDRESS + ':3000/orders',
                     body: {
                         productId: "ID",
                         quantity: "Number"
