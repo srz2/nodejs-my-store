@@ -363,3 +363,5 @@ MigrationBackup/
 # Ignore uploads folder
 uploads/
 
+# Ignore enviornemtn file
+.env
